@@ -1,1 +1,1 @@
-# Nurgul-Saduova-OOP_5semestr
+# OOP_5semestr

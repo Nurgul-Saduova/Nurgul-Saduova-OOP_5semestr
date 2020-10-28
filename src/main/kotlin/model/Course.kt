@@ -11,7 +11,7 @@ class Course(
     val tutors = ArrayList<Tutor>()
     val students = ArrayList<Student>()
     val tasks = ArrayList<Task>()
-    val ratings = ArrayList<Task>()
+    val ratings = mutableMapOf<String, Rating>()
 
     fun addTutorByName(name: String) {
         persons[name]?.let {
@@ -20,8 +20,17 @@ class Course(
         }
     }
 
-    fun checkRating(weights: Map<Task, Int>,sumTask: Array<Int>,controlWeek:Int){
-        ratings[controlWeek] =
+    fun checkRating(weights: Map<Task, Int>) {
+        students.forEach{
+            var count = 0.0
+            tasks.map { task ->
+                val grade = task.grades.maxByOrNull {
+                    it.value
+                }?.value ?: 0
+                count += weights.getValue(task) * (grade / task.maxValue).toDouble()
+            }
+            ratings[it.name]?.value = count.toInt()
+        }
     }
 
     fun  addStudentByName(name: String) {
@@ -57,7 +66,12 @@ class Course(
             task.name to value
         }.toMap()
 
-    fun setTask(name:String, type: Type, description: String, maxValue: Int, deadline:LocalDate = LocalDate.now()){
+    fun setTask(name:String,
+                type: Type,
+                description: String,
+                maxValue: Int,
+                deadline:LocalDate = LocalDate.now()
+    ){
         val task = Task(name,type,description,maxValue,deadline)
         tasks += task
     }

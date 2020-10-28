@@ -5,19 +5,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
-fun Course.addTutorByName(name: String) {
-    persons[name]?.let {
-        if (it is Tutor)
-            tutors.add(it)
-    }
-}
-
-fun Course.addStudentByName(name: String) {
-    persons[name]?.let {
-        if (it is Student)
-            students.add(it)
-    }
-}
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MainTest {
@@ -55,8 +42,8 @@ class MainTest {
             addTutorByName("Sheldon")
             addStudentByName("Howard")
             addStudentByName("Penny")
-            tasks.add(Task("Intro", taskTypes["Lecture"]!!))
-            tasks.add(Task("UML", taskTypes["Lecture"]!!))
+            tasks.add(Task("Intro", taskTypes["Lecture"]!!,maxValue = 1))
+            tasks.add(Task("UML", taskTypes["Lecture"]!!,maxValue = 1))
             tasks.add(Task("Uml lab", taskTypes["Laboratory"]!!, maxValue = 5))
         }
     }
@@ -112,8 +99,33 @@ class MainTest {
         val math = courses["Math"] ?: fail()
         math.addStudents(students)
         assertEquals(
-            true,
-            math.students.find()
+            "Julia",
+            math.students.find{it.name == "Julia"}?.name
+        )
+        assertEquals(
+            "28z",
+            math.students.find{it.name == "Nurgul"}?.group
+        )
+    }
+
+    @Test
+    fun checkRatingTest(){
+        val weights = mapOf<Task,Int>(
+            Task("lec1",Type("Lecture","Lec"),"",1) to 5,
+            Task("lab1", Type("Laboratory","Lab"),"", 5) to 10,
+            Task("tst1", Type("Test","Tst"),"",10)to 20)
+        val math = courses["Math"] ?: fail()
+       /* val students = arrayListOf(Student("Julia","28z"))
+        math.addStudents(students)*/
+        math.setGrade("lec1", "Penny", 1)
+        math.setGrade("lab1", "Penny", 5)
+        math.setGrade("lab1", "Penny", 0)
+        math.setGrade("tst1","Penny",10)
+        math.setGrade("tst1","Penny",0)
+        math.checkRating(weights)
+        assertEquals(
+            35,
+             math.ratings["Penny"]?.value
         )
     }
 }

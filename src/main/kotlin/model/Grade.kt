@@ -9,7 +9,7 @@ class Grade (
     id: EntityID<Int>
 ) : IntEntity(id) {
     companion object : IntEntityClass<Grade>(Grades)
-    var value by Grades.value
+    var count by Grades.count
     var date by Grades.date
     var student by Student referencedOn Grades.student
     var task by Task referencedOn Grades.task

@@ -37,7 +37,7 @@ class Course(
             this.task = task
             this.date = date
             this.student = student
-            this.value = value
+            this.count = count
         }
     }
 

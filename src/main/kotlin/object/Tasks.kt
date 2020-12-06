@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.`java-time`.date
 
 object Tasks : IntIdTable() {
-    override val id: Column<EntityID<Int>> = Grades.integer("id").autoIncrement().entityId()
     var name = varchar("name", length = 50)
     val shortName = varchar("shortName", length = 50)
     var description = varchar("description", length = 50)
@@ -19,5 +18,5 @@ object Tasks : IntIdTable() {
     var type = reference("task", Types)
     var course = reference("course", Courses)
 
-    override val primaryKey = PrimaryKey(id, name = "PK_TASK")
+
 }

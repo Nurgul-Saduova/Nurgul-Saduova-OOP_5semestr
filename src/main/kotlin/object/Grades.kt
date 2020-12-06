@@ -7,11 +7,9 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.`java-time`.date
 
 object Grades : IntIdTable() {
-    override val id: Column<EntityID<Int>> = integer("id").autoIncrement().entityId()
-    val value = integer("value")
+    val count = integer("count")
     val date = date("date")
 
     val student = reference("student", Students)
     val task = reference("task", Tasks)
-    override val primaryKey = PrimaryKey(id, name = "PK_GRADE")
 }

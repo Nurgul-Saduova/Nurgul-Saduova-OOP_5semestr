@@ -6,6 +6,7 @@ import objects.Courses
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.SizedCollection
 import java.time.LocalDate
 
 class Course(
@@ -21,14 +22,14 @@ class Course(
         val tutor = Tutor.new {
             this.name = name
         }
-        this.tutors.plus(tutor)
+        this.tutors= SizedCollection(tutors + listOf(tutor))
     }
 
       fun addStudentByName(name: String) {
         val student = Student.new {
             this.name = name
         }
-        this.students.plus(student)
+        this.students = SizedCollection(students + listOf(student))
     }
 
     fun setGrade(task: Task, student: Student, value: Int, date: LocalDate = LocalDate.now()) {
